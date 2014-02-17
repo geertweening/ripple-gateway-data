@@ -1,0 +1,31 @@
+{
+  "name": "http-server",
+  "preferGlobal": true,
+  "version": "0.0.1",
+  "author": "Steven Zeiler <zeiler.steven@gmail.com>",
+  "description": "Interface specification for Ripple Gateway Data Adapter implementations",
+  "contributors": [ 
+    {
+      "name": "Steven Zeiler",
+      "email": "zeiler.steven@gmail.com"
+    } 
+  ],
+  "main": "./lib/data",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stevenzeiler/ripple-gateway-data.git"
+  },
+  "keywords": [
+    "ripple",
+    "gateway",
+    "data",
+    "adapter",
+    "node"
+  ],
+  "dependencies" : {
+    "mocha"   :  "*"
+  },
+  "devDependencies": {
+    "mocha"    :  "0.5.x"
+  }
+}
