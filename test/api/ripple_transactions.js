@@ -1,6 +1,6 @@
 var assert = require("assert");
 
-describe('APi for Ripple Transactions', function(){
+describe('Ripple Transactions', function(){
 
   describe('creating a ripple transaction', function(){
     before(function(){
@@ -175,7 +175,7 @@ describe('APi for Ripple Transactions', function(){
   describe('deleting a ripple transaction record', function(){
     it('should be able to delete a single transaction record with the transaction id', function(fn){
       opts = {
-        ripple_payment_id: paymend.id
+        ripple_payment_id: payment.id
       }
       adapter.destroyRipplePayment(opts, function(err, ripple_payment){
         assert(ripple_payment);
