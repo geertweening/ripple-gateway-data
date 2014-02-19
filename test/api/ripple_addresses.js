@@ -1,12 +1,16 @@
 var assert = require('assert');
+var Adapter = require('../../adapters/'+(process.env.GATEWAY_DATA_ADAPTER || 'test_adapter'));
 
 describe('Ripple Addresses', function(){
+  before(function(){
+    var adapter = new Adapter();
+  });
   describe('creating a ripple address', function(){
     beforeEach(function(){
       var opts = {};
     });
 
-    it('should a type to be in ["hot", "cold", "hosted", "independent"]', function(fn){
+    it.skip('should a type to be in ["hot", "cold", "hosted", "independent"]', function(fn){
       opts = {
         type: 'notHosted'
       }
@@ -17,7 +21,7 @@ describe('Ripple Addresses', function(){
     
     });
 
-    it('should require the managed boolean flag to be specified', function(fn){
+    it.skip('should require the managed boolean flag to be specified', function(fn){
       opts = {};
       adapter.createRippleAddress(opts, function(err, ripple_address){
         assert(err.managed);
@@ -29,7 +33,7 @@ describe('Ripple Addresses', function(){
       });
     });
 
-    it('should accept a user id, but it is not required', function(fn) {
+    it.skip('should accept a user id, but it is not required', function(fn) {
       opts = {
         type: 'independent',
         managed: false,
@@ -48,7 +52,7 @@ describe('Ripple Addresses', function(){
 
     }); 
 
-    it('should require a tag for hosted addresses', function(fn) {
+    it.skip('should require a tag for hosted addresses', function(fn) {
       opts = {
         type: 'hosted',
         managed: true,
@@ -64,13 +68,13 @@ describe('Ripple Addresses', function(){
       });
     });
 
-    it('should require a valid ripple address for address', function(fn) {
+    it.skip('should require a valid ripple address for address', function(fn) {
 
     });
   });
 
   describe('retrieving ripple addresses', function(){
-    it('should get a ripple address', function(){
+    it.skip('should get a ripple address', function(){
       opts = {
         id: 1
       };
@@ -83,15 +87,17 @@ describe('Ripple Addresses', function(){
 
   });
 
-  describe('updated ripple addresses', function(){
+  describe('updating ripple addresses', function(){
     before(function(fn){
-      ripple_address = {};
+      opts = { id: 1 };
+      adapter = new Adapter();
       adapter.getRippleAddress(opts, function(err, address){
         address = address;
+        fn();
       });
     });
 
-    it('should be able to add a secret key', function(fn){
+    it.skip('should be able to add a secret key', function(fn){
       var secret = 'ssZWRZmYG9g1ZFcwd5UsRhsAx2yeV'
       opts = {
         id: ripple_address.id,
@@ -103,7 +109,7 @@ describe('Ripple Addresses', function(){
       });
     });
 
-    it('should be able to track the previously processed transaction hash for the address', function(fn){
+    it.skip('should be able to track the previously processed transaction hash for the address', function(fn){
       opts = {
         id: ripple_address.id,
         previous_transaction_hash: '12345678'
@@ -122,7 +128,7 @@ describe('Ripple Addresses', function(){
 
   describe('destroying ripple addresses', function(){
 
-    it('should be able to destroy a single address with "ripple_address_id"', function(fn){
+    it.skip('should be able to destroy a single address with "ripple_address_id"', function(fn){
       opts = {
         id: ripple_address.id
       }
@@ -132,6 +138,7 @@ describe('Ripple Addresses', function(){
         adapter.getRippleAddress(opts, function(err, ripple_address){
           assert(err.id);
           assert(!ripple_address);
+          fn();
         });
       });
     });

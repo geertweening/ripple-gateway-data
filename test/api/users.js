@@ -1,7 +1,11 @@
-
-var adapter = new (require("../../adapters/test_adapter.js").Adapter);
+var Adapter = require('../../adapters/'+(process.env.GATEWAY_DATA_ADAPTER || 'test_adapter'));
+var assert = require('assert');
 
 describe('Users', function(){
+  before(function(){
+    adapter = new Adapter();
+  });
+
   it('should allow storage of arbitrary "data" key-value store.', function(done){
     adapter.createUser({ 
       name: '12345lkjlk33',
