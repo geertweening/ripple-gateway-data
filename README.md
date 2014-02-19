@@ -22,11 +22,11 @@ Configure the test suite:
 
     // test/test_adapter.js
 
-    var GatewayData = require('ripple-gateway-data');
+    var AdapterTest = require('ripple-gateway-data').AdapterTest;
     var SqlServerAdapter = require('./lib/sql_server_adapter.js');
 
     var adapter = new SqlServerAdapter(); 
-    var test = new GatewayData.Test(adapter);
+    var test = new AdapterTest(adapter);
 
     test.run();
 
