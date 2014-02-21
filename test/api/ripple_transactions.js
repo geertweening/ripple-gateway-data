@@ -22,7 +22,7 @@ describe('Ripple Transactions', function(){
       opts = {};
     });
 
-    it.skip('should fail without required parameters', function(fn){
+    it('should fail without required parameters', function(fn){
 
       adapter.createRippleTransaction(opts, function(err, ripplePayment){
         assert(err.recipient_address_id);
@@ -38,7 +38,7 @@ describe('Ripple Transactions', function(){
 
     });
 
-    it.skip('should create a ripple transaction', function(fn) {
+    it('should create a ripple transaction', function(fn) {
       opts = {
         recipient_address_id: 1, 
         sender_address_id: 2,
@@ -53,7 +53,7 @@ describe('Ripple Transactions', function(){
       });
     });
 
-    it.skip('should not allow the same recipient and sender address ids', function(fn) {
+    it('should not allow the same recipient and sender address ids', function(fn) {
       var opts = new Object(validRipplePayment);
       opts.sender_address_id = opts.recipient_address_id;
       adapter.createRippleTransaction(opts, function(err, ripplePayment) {
@@ -64,7 +64,7 @@ describe('Ripple Transactions', function(){
       });
     });
 
-    it.skip('should accept a simplified payment and populate the remaining fields', function(fn) {
+    it('should accept a simplified payment and populate the remaining fields', function(fn) {
       var issuer = 'rNa9GCsXLiiZh2pk7bs8TDyYxzByqGKsdw'
       opts = {
         recipient_address_id: 1,
@@ -80,7 +80,7 @@ describe('Ripple Transactions', function(){
       });
     });
 
-    it.skip('should translate all currencies to upper case', function(){
+    it('should translate all currencies to upper case', function(){
       var opts = new Object(validRipplePayment);
       opts.to_currency = 'xAg';
       adapter.createRippleTransaction(opts, function(err, ripplePayment){
@@ -89,11 +89,11 @@ describe('Ripple Transactions', function(){
       });
     });
 
-    it.skip('should require ripple address id of the recipient be in the database', function(fn) {
+    it('should require ripple address id of the recipient be in the database', function(fn) {
 
     });
 
-    it.skip('should require ripple address id of the sender be in the database', function(fn) {
+    it('should require ripple address id of the sender be in the database', function(fn) {
 
     });
   });
@@ -108,7 +108,7 @@ describe('Ripple Transactions', function(){
       });
     });
 
-    it.skip('should be able able to update the transaction hash', function(fn){
+    it('should be able able to update the transaction hash', function(fn){
       opts = {
         ripple_payment_id: payment.id,
         transaction_hash: '123456789'
@@ -118,7 +118,7 @@ describe('Ripple Transactions', function(){
       });
     });
 
-    it.skip('should be able to update the transaction state', function(fn) {
+    it('should be able to update the transaction state', function(fn) {
       opts = {
         ripple_payment_id: payment.id,
         transaction_status: 'tesSUCCESS'
@@ -128,7 +128,7 @@ describe('Ripple Transactions', function(){
       });
     });
 
-    it.skip('should not be able to update any other attributes', function(fn){
+    it('should not be able to update any other attributes', function(fn){
       opts = {
         ripple_payment_id: payment.id,
         to_amount: 999
@@ -150,7 +150,7 @@ describe('Ripple Transactions', function(){
       });
     });
 
-    it.skip('should be able to get a single ripple transaction using its id', function(fn){
+    it('should be able to get a single ripple transaction using its id', function(fn){
       opts = {
         ripple_payment_id: payment.id    
       }
@@ -160,7 +160,7 @@ describe('Ripple Transactions', function(){
 
     });
     
-    it.skip('should be able to get multiple ripple transactions using an array of ids', function(fn){
+    it('should be able to get multiple ripple transactions using an array of ids', function(fn){
       opts = {
         ripple_payment_ids: [1,2,3]
       };
@@ -172,7 +172,7 @@ describe('Ripple Transactions', function(){
       });
     });
 
-    it.skip('should be able to get all ripple transactions', function(fn){
+    it('should be able to get all ripple transactions', function(fn){
       opts = {};
       adapter.getRipplePayments(opts, function(err, ripple_payment){
         assert(ripple_payments.length > -1); 
@@ -181,7 +181,7 @@ describe('Ripple Transactions', function(){
   });
 
   describe('deleting a ripple transaction record', function(){
-    it.skip('should be able to delete a single transaction record with the transaction id', function(fn){
+    it('should be able to delete a single transaction record with the transaction id', function(fn){
       opts = {
         ripple_payment_id: payment.id
       }
