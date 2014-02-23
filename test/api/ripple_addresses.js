@@ -81,7 +81,7 @@ describe('Ripple Addresses', function(){
   });
 
   describe('retrieving ripple addresses', function(){
-    it('should get a ripple address', function(){
+    it('should get a ripple address', function(fn){
       opts = {
         id: 1
       };
@@ -96,10 +96,13 @@ describe('Ripple Addresses', function(){
 
   describe('updating ripple addresses', function(){
     before(function(fn){
-      opts = { id: 1 };
-      adapter = new Adapter();
-      adapter.getRippleAddress(opts, function(err, address){
-        address = address;
+      opts = {
+        type: 'independent',
+        managed: false,
+        address: rand()
+      }
+      adapter.createRippleAddress(opts, function(err, address){
+        ripple_address = address;
         fn();
       });
     });
@@ -110,9 +113,10 @@ describe('Ripple Addresses', function(){
         id: ripple_address.id,
         secret: secret
       };
-      adapter.updateRippleAddress(opts, function(err, ripple_address){
-        assert(ripple_address.secret == secret);
+      adapter.updateRippleAddress(opts, function(err, address){
+        assert(address.secret == secret);
         assert(!err);
+        fn();
       });
     });
 
@@ -121,13 +125,10 @@ describe('Ripple Addresses', function(){
         id: ripple_address.id,
         previous_transaction_hash: '12345678'
       };
-      adapter.updateRippleAddress(opts, function(err, ripple_address){
-        assert(ripple_address.previous_transaction_hash == '12345678');
-        opts.previous_transaction_hash = '987654321';
-        adapter.updateRippleAddress(opts, function(err, ripple_address){
-          assert(ripple_address.previous_transaction_hash == '987654321');
-          fn();
-        });
+      console.log(opts);
+      adapter.updateRippleAddress(opts, function(err, address){
+        assert(address.previous_transaction_hash == '12345678');
+        fn();
       });
     });
 
@@ -135,11 +136,11 @@ describe('Ripple Addresses', function(){
 
   describe('destroying ripple addresses', function(){
 
-    it('should be able to destroy a single address with "ripple_address_id"', function(fn){
+    it('should be able to destroy a single address', function(fn){
       opts = {
         id: ripple_address.id
       }
-      adapter.destroyRippleAddress(opts, function(err, ripple_address){
+      adapter.deleteRippleAddress(opts, function(err, ripple_address){
         assert(!err);
         assert(ripple_address.id == opts.id);
         adapter.getRippleAddress(opts, function(err, ripple_address){
