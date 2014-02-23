@@ -1,5 +1,10 @@
 var assert = require("assert");
 var Adapter = require('../../adapters/'+(process.env.GATEWAY_DATA_ADAPTER || 'test_adapter'));
+var crypto = require('crypto');
+
+function rand() {
+  crypto.randomBytes(16).toString('hex');
+}
 
 describe('Ripple Transactions', function(){
   before(function(){
@@ -83,7 +88,7 @@ describe('Ripple Transactions', function(){
       });
     });
 
-    it('should translate all currencies to upper case', function(){
+    it('should translate all currencies to upper case', function(fn){
       opts = new Object(validRipplePayment);
       opts.to_currency = 'xAg';
       opts.from_address_id = 2;
@@ -106,8 +111,7 @@ describe('Ripple Transactions', function(){
 
   describe('updating a ripple transaction', function() {
     before(function(fn){
-      var payment;
-      var opts = new Object(validRipplePayment); 
+      opts = new Object(validRipplePayment); 
       adapter.createRippleTransaction(opts, function(err, ripplePayment) {
         payment = ripplePayment;
         fn();
@@ -115,32 +119,36 @@ describe('Ripple Transactions', function(){
     });
 
     it('should be able able to update the transaction hash', function(fn){
+      var hash = rand();
       opts = {
-        ripple_payment_id: payment.id,
-        transaction_hash: '123456789'
+        id: payment.id,
+        transaction_hash: hash
       };
       adapter.updateRipplePayment(opts, function(err, ripplePayment){
-        assert(ripplePayment.transaction_hash == '123456789');
+        assert(ripplePayment.transaction_hash == hash);
+        fn();
       });
     });
 
     it('should be able to update the transaction state', function(fn) {
       opts = {
-        ripple_payment_id: payment.id,
-        transaction_status: 'tesSUCCESS'
+        id: payment.id,
+        transaction_state: 'tesSUCCESS'
       }
       adapter.updateRipplePayment(opts, function(err, ripplePayment){
-        assert(ripplePayment.transaction_status == 'tesSUCCESS');
+        assert(ripplePayment.transaction_state == 'tesSUCCESS');
+        fn();
       });
     });
 
     it('should not be able to update any other attributes', function(fn){
       opts = {
-        ripple_payment_id: payment.id,
+        id: payment.id,
         to_amount: 999
       }
       adapter.updateRipplePayment(opts, function(err, ripplePayment){
         assert(ripplePayment.to_amount == validRipplePayment.to_amount);
+        fn();
       });
     });
 
@@ -189,7 +197,7 @@ describe('Ripple Transactions', function(){
   describe('deleting a ripple transaction record', function(){
     it('should be able to delete a single transaction record with the transaction id', function(fn){
       opts = {
-        ripple_payment_id: payment.id
+        id: payment.id
       }
       adapter.destroyRipplePayment(opts, function(err, ripple_payment){
         assert(ripple_payment);
