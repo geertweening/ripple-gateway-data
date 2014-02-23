@@ -166,30 +166,33 @@ describe('Ripple Transactions', function(){
 
     it('should be able to get a single ripple transaction using its id', function(fn){
       opts = {
-        ripple_payment_id: payment.id    
+        id: payment.id    
       }
       adapter.getRipplePayment(opts, function(err, ripple_payment){
-        assert(ripple_payment.id == ripple_payment_id); 
+        assert(ripple_payment.id == opts.id); 
+        fn();
       });
 
     });
     
     it('should be able to get multiple ripple transactions using an array of ids', function(fn){
       opts = {
-        ripple_payment_ids: [1,2,3]
+        ids: [1,2,3]
       };
       adapter.getRipplePayments(opts, function(err, ripple_payments){
         assert(ripple_payments.length == 3); 
         assert(ripple_payments[0].id == 1);
         assert(ripple_payments[1].id == 2);
         assert(ripple_payments[2].id == 3);
+        fn();
       });
     });
 
     it('should be able to get all ripple transactions', function(fn){
       opts = {};
-      adapter.getRipplePayments(opts, function(err, ripple_payment){
+      adapter.getRipplePayments(opts, function(err, ripple_payments){
         assert(ripple_payments.length > -1); 
+        fn();
       }); 
     });
   });
