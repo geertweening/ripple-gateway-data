@@ -95,7 +95,7 @@ describe('Ripple Transactions', function(){
       opts.to_issuer = 'issuer';
       opts.from_issuer = 'issuer';
       adapter.createRippleTransaction(opts, function(err, ripplePayment){
-        assert(ripplePayment.to_currency == 'XAG');
+        assert(ripplePayment.toJSON().to_currency == 'XAG');
         fn();
       });
     });
@@ -202,12 +202,12 @@ describe('Ripple Transactions', function(){
       opts = {
         id: payment.id
       }
-      adapter.destroyRipplePayment(opts, function(err, ripple_payment){
-        assert(ripple_payment);
+      adapter.deleteRipplePayment(opts, function(err, ripple_payment){
         adapter.getRipplePayment(opts, function(err, ripple_payment){
           assert(err);
           assert(err.id);
           assert(!ripple_payment);
+          fn();
         });
       }); 
     });
