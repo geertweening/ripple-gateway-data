@@ -1,9 +1,12 @@
 var assert = require('assert');
 var Adapter = require('../../adapters/'+(process.env.GATEWAY_DATA_ADAPTER || 'test_adapter'));
+var crypto = require('crypto');
+
+function rand() { return crypto.randomBytes(12).toString('hex') };
 
 describe('Ripple Addresses', function(){
   before(function(){
-    var adapter = new Adapter();
+    adapter = new Adapter();
   });
   describe('creating a ripple address', function(){
     beforeEach(function(){
@@ -22,12 +25,16 @@ describe('Ripple Addresses', function(){
     });
 
     it('should require the managed boolean flag to be specified', function(fn){
-      opts = {};
+      opts = {
+        type: 'independent',
+        address: rand()
+      };
       adapter.createRippleAddress(opts, function(err, ripple_address){
         assert(err.managed);
         opts.managed = true;
+        opts.address = rand();
         adapter.createRippleAddress(opts, function(err, ripple_address){
-          assert(!err.managed);
+          assert(!err);
           fn();
         });
       });
@@ -37,7 +44,7 @@ describe('Ripple Addresses', function(){
       opts = {
         type: 'independent',
         managed: false,
-        address: r9YXGrd8X2AgRqFh1jV9fnE1YhDiSSepy3
+        address: 'r9YXGrd8X2AgRqFh1jV9fnE1YhDiSSepy3'
       }
       adapter.createRippleAddress(opts, function(err, ripple_address){
         assert(ripple_address);
@@ -56,7 +63,7 @@ describe('Ripple Addresses', function(){
       opts = {
         type: 'hosted',
         managed: true,
-        address: r9YXGrd8X2AgRqFh1jV9fnE1YhDiSSepy3
+        address: 'r9YXGrd8X2AgRqFh1jV9fnE1YhDiSSepy3'
       }
       adapter.createRippleAddress(opts, function(err, ripple_address){
         assert(err.tag);
@@ -68,7 +75,7 @@ describe('Ripple Addresses', function(){
       });
     });
 
-    it('should require a valid ripple address for address', function(fn) {
+    it.skip('should require a valid ripple address for address', function(fn) {
 
     });
   });
