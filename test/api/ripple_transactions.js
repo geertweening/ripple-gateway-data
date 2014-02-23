@@ -67,7 +67,7 @@ describe('Ripple Transactions', function(){
     });
 
     it('should accept a simplified payment and populate the remaining fields', function(fn) {
-      var issuer = 'rNa9GCsXLiiZh2pk7bs8TDyYxzByqGKsdw'
+      var issuer = 'rNa9GCsXLiiZh2pk7bs8TDyYxzByqGKsdw';
       opts = {
         to_address_id: 1,
         from_address_id: 2,
@@ -77,7 +77,7 @@ describe('Ripple Transactions', function(){
       };
       adapter.createRippleTransaction(opts, function(err, ripplePayment){
         assert(ripplePayment.from_amount == 1);
-        assert(ripplePayment.from_currency == 'XAG');
+        assert(ripplePayment.from_currency == 'xag');
         assert(ripplePayment.from_issuer == issuer);
         fn();
       });
