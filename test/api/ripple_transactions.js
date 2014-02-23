@@ -25,8 +25,8 @@ describe('Ripple Transactions', function(){
     it('should fail without required parameters', function(fn){
 
       adapter.createRippleTransaction(opts, function(err, ripplePayment){
-        assert(err.recipient_address_id);
-        assert(err.sender_address_id);
+        assert(err.to_address_id);
+        assert(err.from_address_id);
         assert(err.to_amount);
         assert(err.to_currency);
         assert(err.to_issuer);
@@ -43,9 +43,13 @@ describe('Ripple Transactions', function(){
         recipient_address_id: 1, 
         sender_address_id: 2,
         to_amount: 1,
-        t9GCsXLiiZh2pk7bs8TDyYxzByqGKsdwo_currency: 'xrp',
+        to_currency: 'usd',
+        to_issuer: 't9GCsXLiiZh2pk7bs8TDyYxzByqGKsd',
         from_amount: '1',
-        from_currency: 'xrp'
+        from_currency: 'usd',
+        from_issuer: 't9GCsXLiiZh2pk7bs8TDyYxzByqGKsd',
+        to_address_id: '1',
+        from_address_id: '1'
       }
       adapter.createRippleTransaction(opts,function(err, ripplePayment) {
         assert(ripplePayment);
