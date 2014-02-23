@@ -9,8 +9,8 @@ describe('Ripple Transactions', function(){
   describe('creating a ripple transaction', function(){
     before(function(){
       validRipplePayment = {
-        recipient_address_id: 1, 
-        sender_address_id: 2,
+        to_address_id: 1, 
+        from_address_id: 2,
         to_amount: 1,
         to_currency: 'xrp',
         from_amount: '1',
@@ -40,16 +40,14 @@ describe('Ripple Transactions', function(){
 
     it('should create a ripple transaction', function(fn) {
       opts = {
-        recipient_address_id: 1, 
-        sender_address_id: 2,
+        to_address_id: 1, 
+        from_address_id: 2,
         to_amount: 1,
         to_currency: 'usd',
         to_issuer: 't9GCsXLiiZh2pk7bs8TDyYxzByqGKsd',
         from_amount: '1',
         from_currency: 'usd',
         from_issuer: 't9GCsXLiiZh2pk7bs8TDyYxzByqGKsd',
-        to_address_id: '1',
-        from_address_id: '1'
       }
       adapter.createRippleTransaction(opts,function(err, ripplePayment) {
         assert(ripplePayment);
@@ -59,11 +57,11 @@ describe('Ripple Transactions', function(){
 
     it('should not allow the same recipient and sender address ids', function(fn) {
       var opts = new Object(validRipplePayment);
-      opts.sender_address_id = opts.recipient_address_id;
+      opts.from_address_id = opts.to_address_id;
       adapter.createRippleTransaction(opts, function(err, ripplePayment) {
         assert(!ripplePayment);
-        assert(err.sender_address_id);
-        assert(err.recipient_address_id);
+        assert(err.to_address_id);
+        assert(err.from_address_id);
         fn();
       });
     });
@@ -71,7 +69,8 @@ describe('Ripple Transactions', function(){
     it('should accept a simplified payment and populate the remaining fields', function(fn) {
       var issuer = 'rNa9GCsXLiiZh2pk7bs8TDyYxzByqGKsdw'
       opts = {
-        recipient_address_id: 1,
+        to_address_id: 1,
+        from_address_id: 2,
         to_amount: 1,
         to_currency: 'xag',
         to_issuer: issuer
@@ -85,19 +84,22 @@ describe('Ripple Transactions', function(){
     });
 
     it('should translate all currencies to upper case', function(){
-      var opts = new Object(validRipplePayment);
+      opts = new Object(validRipplePayment);
       opts.to_currency = 'xAg';
+      opts.from_address_id = 2;
+      opts.to_issuer = 'issuer';
+      opts.from_issuer = 'issuer';
       adapter.createRippleTransaction(opts, function(err, ripplePayment){
         assert(ripplePayment.to_currency == 'XAG');
         fn();
       });
     });
 
-    it('should require ripple address id of the recipient be in the database', function(fn) {
+    it.skip('should require ripple address id of the recipient be in the database', function(fn) {
 
     });
 
-    it('should require ripple address id of the sender be in the database', function(fn) {
+    it.skip('should require ripple address id of the sender be in the database', function(fn) {
 
     });
   });
