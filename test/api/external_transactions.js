@@ -57,32 +57,82 @@ describe('External Transactions', function(){
   });
   
   describe('reading external transactions', function(){
-    it.skip('should retrieve a single external transaction', function(fn){
-      fn();
+    it('should retrieve a single external transaction', function(fn){
+      adapter.getExternalTransaction(opts, function(err, external_transaction){
+        fn();
+      });
     });
 
-    it.skip('should retrieve a list of all pending withdrawals', function(fn){
-      fn();
+    it('should retrieve a list of all pending withdrawals', function(fn){
+      opts = {};
+      adapter.getPendingWithdrawals(opts, function(err, pending_withdrawals){
+        assert(pending_withdrawals.length >= 0);
+        fn();
+      });
     });
     
-    it.skip('should retrieve a list of pending withdrawals for an account', function(fn){
-      fn();
+    it('should retrieve a list of pending withdrawals for an account', function(fn){
+      opts = { external_account_id: 1 };
+      adapter.getPendingWithdrawals(opts, function(err, pending_withdrawals){
+        assert(pending_withdrawals.length >= 0);
+        fn();
+      });
     });
   });
 
   describe('updating external transactions', function(){
-    it.skip('should update pending withdrawals upon completion', function(fn){
-      fn();      
+    it('should update pending withdrawals upon completion', function(fn){
+      opts = { 
+        external_account_id: 1,
+        amount: 10,
+        currency: 'cupsofcoffee',
+        deposit: true
+      };
+      adapter.createExternalTransaction(opts, function(err, external_transaction){
+        opts.id = external_transaction.id;
+        opts.status = 'complete';
+        adapter.updateExternalTransaction(opts, function(err, external_transaction){
+          assert(external_transaction.status == 'complete');
+          fn();
+        });
+      });
     });
 
-    it.skip('should add a ripple transaction id', function(fn){
-      fn();
+    it('should add a ripple transaction id', function(fn){
+      opts = { 
+        external_account_id: 1,
+        amount: 10,
+        currency: 'cupsofcoffee',
+        deposit: true
+      };
+      adapter.createExternalTransaction(opts, function(err, external_transaction){
+        opts.id = external_transaction.id;
+        opts.ripple_transaction_id = 1;
+        adapter.updateExternalTransaction(opts, function(err, external_transaction){
+          assert(external_transaction.ripple_transaction_id == 1);
+          fn();
+        });
+      });
     });
   });
 
   describe('deleting external transactions', function(){
-    it.skip('should destroy a record with its id', function(fn){
-      fn();
+    it('should destroy a record with its id', function(fn){
+      opts = { 
+        external_account_id: 1,
+        amount: 10,
+        currency: 'cupsofcoffee',
+        deposit: true
+      };
+      adapter.createExternalTransaction(opts, function(err, external_transaction){
+        var id = external_transaction.id;
+        adapter.deleteExternalTransaction({ id: id }, function(err, external_transaction){
+          adapter.getExternalTransaction({ id: id }, function(err, external_transaction){
+            assert(err.id);
+            fn();
+          });
+        });
+      });
     }); 
   });
 
