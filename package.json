@@ -1,9 +1,12 @@
 {
   "name": "ripple-gateway-data",
   "preferGlobal": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Steven Zeiler <zeiler.steven@gmail.com>",
   "description": "Interface specification for Ripple Gateway Data Adapter implementations",
+  "scripts": {
+    "test": "GATEWAY_DATA_ADAPTER=sequelize mocha -R spec test/api/*.js"
+  },
   "contributors": [ 
     {
       "name": "Steven Zeiler",

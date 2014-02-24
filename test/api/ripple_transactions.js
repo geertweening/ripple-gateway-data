@@ -100,11 +100,11 @@ describe('Ripple Transactions', function(){
       });
     });
 
-    it.skip('should require ripple address id of the recipient be in the database', function(fn) {
+    it('should require ripple address id of the recipient be in the database', function(fn) {
 
     });
 
-    it.skip('should require ripple address id of the sender be in the database', function(fn) {
+    it('should require ripple address id of the sender be in the database', function(fn) {
 
     });
   });

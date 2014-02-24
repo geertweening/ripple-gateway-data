@@ -75,7 +75,7 @@ describe('Ripple Addresses', function(){
       });
     });
 
-    it.skip('should require a valid ripple address for address', function(fn) {
+    it('should require a valid ripple address for address', function(fn) {
 
     });
   });
