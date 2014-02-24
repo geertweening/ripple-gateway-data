@@ -64,9 +64,10 @@ describe('External Accounts', function() {
       }
       adapter.createExternalAccount(opts, function(err, external_account){
         opts = { id: external_account.id };
-        adapter.getExternalAcccout(opts, function(err, external_account){
+        adapter.getExternalAcccount(opts, function(err, external_account){
           assert(external_account.id, opts.id);
           assert(!err);
+          fn();
         });
       });
     });
@@ -84,6 +85,7 @@ describe('External Accounts', function() {
         adapter.updateExternalAccount(opts, function(err, external_account){
           assert(!err);
           assert(external_account.user_id == 2);
+          fn();
         });
       });
     });
@@ -99,6 +101,7 @@ describe('External Accounts', function() {
         adapter.updateExternalAccount(opts, function(err, external_account){
           assert(!err);
           assert(external_account.name == opts.name);
+          fn();
         });
       });
 
@@ -116,12 +119,13 @@ describe('External Accounts', function() {
         opts = {
           id: external_account.id
         };
-        adapter.destroyExternalAccount(opts, function(err, external_account){
+        adapter.deleteExternalAccount(opts, function(err, external_account){
           assert(!err);
           assert(external_account.name == opts.name);
           adapter.getExternalAccount(opts, function(err, external_account){
             assert(err.id);
             assert(!external_account);
+            fn();
           });
         });
       });
