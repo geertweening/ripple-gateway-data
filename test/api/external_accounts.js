@@ -64,7 +64,7 @@ describe('External Accounts', function() {
       }
       adapter.createExternalAccount(opts, function(err, external_account){
         opts = { id: external_account.id };
-        adapter.getExternalAcccount(opts, function(err, external_account){
+        adapter.getExternalAccount(opts, function(err, external_account){
           assert(external_account.id, opts.id);
           assert(!err);
           fn();
@@ -82,6 +82,7 @@ describe('External Accounts', function() {
       }
       adapter.createExternalAccount(opts, function(err, external_account){
         opts.user_id = 2;
+        opts.id = external_account.id
         adapter.updateExternalAccount(opts, function(err, external_account){
           assert(!err);
           assert(external_account.user_id == 2);
@@ -98,6 +99,7 @@ describe('External Accounts', function() {
       adapter.createExternalAccount(opts, function(err, external_account){
         assert(external_account.name == opts.name);
         opts.name = uuid.v1();
+        opts.id = external_account.id;
         adapter.updateExternalAccount(opts, function(err, external_account){
           assert(!err);
           assert(external_account.name == opts.name);
@@ -110,18 +112,19 @@ describe('External Accounts', function() {
   });
 
   describe('deleting an external account', function(fn){
+    before(function(){
+      name = uuid.v1();
+    });
     it('should delete an external account', function(fn){
       opts = {
         user_id: 1,
-        name: uuid.v1()
+        name: name
       }
       adapter.createExternalAccount(opts, function(err, external_account){
         opts = {
           id: external_account.id
         };
         adapter.deleteExternalAccount(opts, function(err, external_account){
-          assert(!err);
-          assert(external_account.name == opts.name);
           adapter.getExternalAccount(opts, function(err, external_account){
             assert(err.id);
             assert(!external_account);
