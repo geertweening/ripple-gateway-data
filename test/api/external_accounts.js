@@ -71,7 +71,19 @@ describe('External Accounts', function() {
         });
       });
     });
+  });
 
+  describe('listing external accounts', function(){
+    it('should retrieve all the external accounts', function(fn){
+      opts = {
+        user_id: 1
+      }
+      adapter.getExternalAccounts(opts, function(err, external_accounts){
+        assert(external_accounts.length >= 0);
+        assert(!err);
+        fn();
+      });
+    }); 
   });
 
   describe('updating an external account', function(){
