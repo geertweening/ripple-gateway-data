@@ -1,4 +1,4 @@
-var Adapter = require('../../adapters/'+(process.env.GATEWAY_DATA_ADAPTER || 'test_adapter'));
+var Adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter');
 
 describe('Hosted Wallet Balances', function(){
   before(function(){

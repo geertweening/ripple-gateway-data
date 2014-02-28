@@ -1,5 +1,5 @@
 var assert = require('assert');
-var Adapter = require('../../adapters/'+(process.env.GATEWAY_DATA_ADAPTER || 'test_adapter'));
+var Adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter');
 var crypto = require('crypto');
 
 function rand() { return crypto.randomBytes(12).toString('hex') };
