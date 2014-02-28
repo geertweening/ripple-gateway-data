@@ -1,6 +1,8 @@
 Ripple Gateway Data
 ===================
 
+[![Build Status](https://api.travis-ci.org/stevenzeiler/ripple-gateway-data.png)](https://api.travis-ci.org/stevenzeiler/ripple-gateway-data)
+
 Interface specification and tests for Ripple Gateway Data Adapter impementations.
 
 The [Ripple Gateway API Server](https://github.com/ripple/ripple-gateway) software
