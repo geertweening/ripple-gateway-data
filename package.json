@@ -7,11 +7,11 @@
   "scripts": {
     "test": "GATEWAY_DATA_ADAPTER=sequelize mocha -R spec test/api/*.js"
   },
-  "contributors": [ 
+  "contributors": [
     {
       "name": "Steven Zeiler",
       "email": "zeiler.steven@gmail.com"
-    } 
+    }
   ],
   "main": "index.js",
   "repository": {
@@ -25,12 +25,14 @@
     "adapter",
     "node"
   ],
-  "dependencies" : {
-    "mocha"   :  "*",
+  "dependencies": {
+    "mocha": "*",
     "node-uuid": "",
-    "ripple-gateway-data-sequelize-adapter": "0.3.0"
+    "ripple-gateway-data-sequelize-adapter": "0.3.0",
+    "ripple-wallet": "",
+    "async": ""
   },
   "devDependencies": {
-    "mocha"    :  "0.5.x"
+    "mocha": ""
   }
 }

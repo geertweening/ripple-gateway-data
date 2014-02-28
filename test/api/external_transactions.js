@@ -2,6 +2,10 @@ var Adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_a
 var assert = require('assert');
 
 describe('External Transactions', function(){
+
+  var adapter;
+  var opts;
+
   before(function(){
     adapter = new Adapter();
   });

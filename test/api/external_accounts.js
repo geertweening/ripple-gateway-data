@@ -3,6 +3,10 @@ var assert = require('assert');
 var uuid = require('node-uuid');
 
 describe('External Accounts', function() {
+
+  var adapter;
+  var opts;
+
   before(function(){
     adapter = new Adapter();
   });
@@ -124,11 +128,15 @@ describe('External Accounts', function() {
   });
 
   describe('deleting an external account', function(fn){
+      
+    var name;
+
     before(function(){
       name = uuid.v1();
     });
+
     it('should delete an external account', function(fn){
-      opts = {
+      var opts = {
         user_id: 1,
         name: name
       }
