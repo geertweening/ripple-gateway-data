@@ -5,7 +5,7 @@
   "author": "Steven Zeiler <zeiler.steven@gmail.com>",
   "description": "Interface specification for Ripple Gateway Data Adapter implementations",
   "scripts": {
-    "test": "GATEWAY_DATA_ADAPTER=sequelize mocha -R spec test/api/*.js"
+    "test": "GATEWAY_DATA_ADAPTER=ripple-gateway-data-sequelize-adapter mocha --ignore-leaks -R spec test/api/*.js"
   },
   "contributors": [
     {
@@ -13,7 +13,6 @@
       "email": "zeiler.steven@gmail.com"
     }
   ],
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/stevenzeiler/ripple-gateway-data.git"
@@ -33,6 +32,6 @@
     "async": ""
   },
   "devDependencies": {
-    "mocha": ""
+    "mocha": "1.17.1"
   }
 }
