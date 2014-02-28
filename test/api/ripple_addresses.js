@@ -1,16 +1,21 @@
 var assert = require('assert');
-var Adapter = require('../../adapters/'+(process.env.GATEWAY_DATA_ADAPTER || 'test_adapter'));
+var Adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter');
 var crypto = require('crypto');
 
 function rand() { return crypto.randomBytes(12).toString('hex') };
 
 describe('Ripple Addresses', function(){
+
+  var adapter;
+
   before(function(){
     adapter = new Adapter();
   });
   describe('creating a ripple address', function(){
+    var opts;
+
     beforeEach(function(){
-      var opts = {};
+      opts = {};
     });
 
     it('should a type to be in ["hot", "cold", "hosted", "independent"]', function(fn){
@@ -76,11 +81,14 @@ describe('Ripple Addresses', function(){
     });
 
     it('should require a valid ripple address for address', function(fn) {
-
+      // not implemented!
+      fn();
     });
   });
 
   describe('retrieving ripple addresses', function(){
+    var opts;
+
     it('should get a ripple address', function(fn){
       opts = {
         id: 1
@@ -94,7 +102,11 @@ describe('Ripple Addresses', function(){
 
   });
 
+  var ripple_address;
+
   describe('updating ripple addresses', function(){
+    var opts;
+
     before(function(fn){
       opts = {
         type: 'independent',
@@ -125,7 +137,6 @@ describe('Ripple Addresses', function(){
         id: ripple_address.id,
         previous_transaction_hash: '12345678'
       };
-      console.log(opts);
       adapter.updateRippleAddress(opts, function(err, address){
         assert(address.previous_transaction_hash == '12345678');
         fn();
@@ -135,6 +146,7 @@ describe('Ripple Addresses', function(){
   });
 
   describe('destroying ripple addresses', function(){
+    var opts;
 
     it('should be able to destroy a single address', function(fn){
       opts = {

@@ -1,7 +1,11 @@
-var Adapter = require('../../adapters/'+(process.env.GATEWAY_DATA_ADAPTER || 'test_adapter'));
+var Adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter');
 var assert = require('assert');
 
 describe('External Transactions', function(){
+
+  var adapter;
+  var opts;
+
   before(function(){
     adapter = new Adapter();
   });
