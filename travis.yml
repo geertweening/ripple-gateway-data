@@ -1,0 +1,6 @@
+language: node_js
+node_js:
+  - "0.10"
+env:
+  - DATABASE_URL=postgres://mjbljqllvgrqyc:lRsvcoBqr-SY1pIpyZ8jsz7xeW@ec2-54-197-241-94.compute-1.amazonaws.com:5432/d9vdpaeqr6k8c0?native=true 
+  - GATEWAY_DATA_ADAPTER=ripple-gateway-data-sequelize-adapter
