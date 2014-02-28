@@ -13,6 +13,9 @@ describe('Users', function(){
     opts = {};
   });
 
+  var userId;
+  var userName;
+
   describe('creating a user', function(){
 
     it('should succeed with a username and password', function(fn){
@@ -25,6 +28,8 @@ describe('Users', function(){
         assert(!err);
         assert(user.id > 0);
         assert(user.name == opts.name); 
+        userId = user.id;
+        userName = user.name;
         fn();
       });
     });
@@ -93,6 +98,47 @@ describe('Users', function(){
   });
 
 
+  describe('Retreiving a user', function() {
+
+    it('should retreive a user by id', function(done) {
+      adapter.getUser({id: userId}, function(err, user) {
+        assert(user.id == userId);
+        done();
+      });
+    });
+
+    it('should retreive a user by username', function(done) {
+      adapter.getUser({name: userName}, function(err, user) {
+        assert(user.name == userName);
+        done();
+      });
+    });
+
+  });
+
+
+  describe('Updating a user', function() {
+
+    var external_id = random();
+
+    it('should add an external_id to a user', function(done) {
+      adapter.updateUser({id: userId}, {external_id: external_id}, function(err, user) {
+        assert(user.external_id == external_id);
+        done();
+      });
+    });
+
+    it('should retreive the user by updated external_id', function(done) {
+      adapter.getUser({external_id: external_id}, function(err, user) {
+        assert(user.external_id == external_id);
+        assert(user.name == userName);
+        done();
+      });
+    });
+
+  });
+  
+
   it.skip('should allow storage of arbitrary "data" key-value store.', function(done){
 
     adapter.createUser({ 
@@ -105,7 +151,9 @@ describe('Users', function(){
       }
     }, function(err, user) {
       assert(user.data.phone_numbers[0] == '8675309');
+      assert(user.data.id);
+      userId = user.data.id;
       done();
     });
-  })
+  });
 });
