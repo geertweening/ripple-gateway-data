@@ -1,7 +1,7 @@
 {
   "name": "ripple-gateway-data",
   "preferGlobal": true,
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "Steven Zeiler <zeiler.steven@gmail.com>",
   "description": "Interface specification for Ripple Gateway Data Adapter implementations",
   "scripts": {
@@ -28,7 +28,7 @@
   "dependencies": {
     "mocha": "*",
     "node-uuid": "",
-    "ripple-gateway-data-sequelize-adapter": "0.4.2",
+    "ripple-gateway-data-sequelize-adapter": "0.4.1",
     "ripple-wallet": "",
     "async": ""
   },
