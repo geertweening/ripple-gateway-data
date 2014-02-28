@@ -1,7 +1,7 @@
 {
   "name": "ripple-gateway-data",
   "preferGlobal": true,
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "Steven Zeiler <zeiler.steven@gmail.com>",
   "description": "Interface specification for Ripple Gateway Data Adapter implementations",
   "scripts": {
