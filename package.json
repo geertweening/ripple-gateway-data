@@ -27,7 +27,7 @@
   "dependencies": {
     "mocha": "*",
     "node-uuid": "",
-    "ripple-gateway-data-sequelize-adapter": "0.4.2",
+    "ripple-gateway-data-sequelize-adapter": "0.4.3",
     "ripple-wallet": "",
     "async": ""
   },
