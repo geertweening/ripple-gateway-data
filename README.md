@@ -20,19 +20,3 @@ Data Adapter functions.
 The test suite provided represents the Ripple Gateway API, and each complete
 implementation must pass it. 
 
-Configure the test suite:
-
-    // test/test_adapter.js
-
-    var AdapterTest = require('ripple-gateway-data').AdapterTest;
-    var SqlServerAdapter = require('./lib/sql_server_adapter.js');
-
-    var adapter = new SqlServerAdapter(); 
-    var test = new AdapterTest(adapter);
-
-    test.run();
-
-Run the test suite on your custom adapter:
-
-    mocha test/adapter.js
-
