@@ -137,23 +137,77 @@ describe('Users', function(){
     });
 
   });
-  
 
-  it.skip('should allow storage of arbitrary "data" key-value store.', function(done){
+  describe('Arbitrary key-value store for user data', function() {  
 
-    adapter.createUser({ 
-      name: '12345lkjlk33',
-      password: '88dkjkjiekkeoo',
-      data: {
-        phone_numbers: [
-          '8675309', '8022222222'
-        ]
+    var dataUserId;
+
+    it('should create a user with arbitrary "data" key-value store', function(done) {
+
+      opts = {
+        name: random(),
+        password: random(),
+        data: {
+          phone_numbers: [
+            '8675309', '8022222222'
+          ]
+        }
       }
-    }, function(err, user) {
-      assert(user.data.phone_numbers[0] == '8675309');
-      assert(user.data.id);
-      userId = user.data.id;
-      done();
+
+      adapter.createUser(opts, function(err, user){
+        assert(user.data.phone_numbers[0] == '8675309');
+        assert(user.id);
+        dataUserId = user.id;
+        done();
+      });
     });
+
+    it ('should add data to the data store', function(done) {
+
+      opts = {
+        data: {
+          computers: {
+            mac: {
+              storage : '100gb',
+              screens : [ '0123', '1234' ]
+            },
+            pc: {
+              storage : [ 
+                {
+                  type: 'ssd',
+                  size: '25gb'
+                },
+                {
+                  type: 'hdd',
+                  size: '100gb'
+                }
+              ]
+            }
+          }
+        }
+      };
+
+      adapter.updateUser({id: dataUserId}, opts, function(err, user) {
+        assert(user.data.phone_numbers[0] == '8675309');
+        assert(user.data.computers.mac.storage == '100gb');
+        assert(user.data.computers.mac.screens[0] == '0123');
+        assert(user.data.computers.pc.storage[0].type == 'ssd');
+        assert(user.data.computers.pc.storage[1].size == '100gb');
+        done();
+      });
+
+    });
+
+    it ('should verify the added data is retrievable', function(done) {
+      adapter.getUser({id: dataUserId}, function(err, user) {
+        assert(user.data.phone_numbers[0] == '8675309');
+        assert(user.data.computers.mac.storage == '100gb');
+        assert(user.data.computers.mac.screens[0] == '0123');
+        assert(user.data.computers.pc.storage[0].type == 'ssd');
+        assert(user.data.computers.pc.storage[1].size == '100gb');
+        done();
+      });
+    });
+
   });
 });
