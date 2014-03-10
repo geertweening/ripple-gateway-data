@@ -1,10 +1,6 @@
-var Adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter');
+var adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter');
 
 describe('Hosted Wallet Balances', function(){
-
-  before(function(){
-    var adapter = new Adapter();
-  });
 
   it('should be able to retrieve all the balances with a user id', function(fn) {
     fn();

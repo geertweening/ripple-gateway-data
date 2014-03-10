@@ -1,4 +1,4 @@
-var Adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter');
+var adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter');
 var assert = require('assert');
 var crypto = require('crypto');
 
@@ -6,10 +6,7 @@ function random() { return crypto.randomBytes(16).toString('hex') };
 
 describe('Users', function(){
 
-  var adapter;
-
   before(function(){
-    adapter = new Adapter();
     opts = {};
   });
 

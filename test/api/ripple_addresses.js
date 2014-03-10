@@ -1,16 +1,11 @@
 var assert = require('assert');
-var Adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter');
+var adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter');
 var crypto = require('crypto');
 
 function rand() { return crypto.randomBytes(12).toString('hex') };
 
 describe('Ripple Addresses', function(){
 
-  var adapter;
-
-  before(function(){
-    adapter = new Adapter();
-  });
   describe('creating a ripple address', function(){
     var opts;
 

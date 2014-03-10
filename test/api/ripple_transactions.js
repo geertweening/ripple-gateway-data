@@ -1,5 +1,5 @@
 var assert = require("assert");
-var Adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter');
+var adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter');
 var crypto = require('crypto');
 
 function rand() {
@@ -7,12 +7,7 @@ function rand() {
 }
 
 describe('Ripple Transactions', function(){
-  var adapter;
   var validRipplePayment;
-
-  before(function(){
-    adapter = new Adapter();
-  });
 
   describe('creating a ripple transaction', function(){
     var opts;
