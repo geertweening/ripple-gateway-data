@@ -1,5 +1,5 @@
 var assert = require('assert');
-var adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter');
+var adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter').rippleAddresses;
 var crypto = require('crypto');
 
 function rand() { return crypto.randomBytes(12).toString('hex') };
@@ -17,7 +17,7 @@ describe('Ripple Addresses', function(){
       opts = {
         type: 'notHosted'
       }
-      adapter.createRippleAddress(opts, function(err, ripple_address){
+      adapter.create(opts, function(err, ripple_address){
         assert(err.type);
         fn();
       });
@@ -29,11 +29,11 @@ describe('Ripple Addresses', function(){
         type: 'independent',
         address: rand()
       };
-      adapter.createRippleAddress(opts, function(err, ripple_address){
+      adapter.create(opts, function(err, ripple_address){
         assert(err.managed);
         opts.managed = true;
         opts.address = rand();
-        adapter.createRippleAddress(opts, function(err, ripple_address){
+        adapter.create(opts, function(err, ripple_address){
           assert(!err);
           fn();
         });
@@ -46,12 +46,12 @@ describe('Ripple Addresses', function(){
         managed: false,
         address: 'r9YXGrd8X2AgRqFh1jV9fnE1YhDiSSepy3'
       }
-      adapter.createRippleAddress(opts, function(err, ripple_address){
+      adapter.create(opts, function(err, ripple_address){
         assert(ripple_address);
         assert(!ripple_address.user_id);
         assert(!err);
         opts.user_id = 1; 
-        adapter.createRippleAddress(opts, function(err, ripple_address){
+        adapter.create(opts, function(err, ripple_address){
           assert(ripple_address.user_id == 1);
           fn();
         });
@@ -65,10 +65,10 @@ describe('Ripple Addresses', function(){
         managed: true,
         address: 'r9YXGrd8X2AgRqFh1jV9fnE1YhDiSSepy3'
       }
-      adapter.createRippleAddress(opts, function(err, ripple_address){
+      adapter.create(opts, function(err, ripple_address){
         assert(err.tag);
         opts.tag = 111;
-        adapter.createRippleAddress(opts, function(err, ripple_address){
+        adapter.create(opts, function(err, ripple_address){
           assert(ripple_address.tag == 111);
           fn();
         });
@@ -88,7 +88,7 @@ describe('Ripple Addresses', function(){
       opts = {
         id: 1
       };
-      adapter.getRippleAddress(opts, function(err, ripple_address){
+      adapter.read(opts, function(err, ripple_address){
         assert(ripple_address.id == 1);
         assert(!err);
         fn();
@@ -108,7 +108,7 @@ describe('Ripple Addresses', function(){
         managed: false,
         address: rand()
       }
-      adapter.createRippleAddress(opts, function(err, address){
+      adapter.create(opts, function(err, address){
         ripple_address = address;
         fn();
       });
@@ -120,7 +120,7 @@ describe('Ripple Addresses', function(){
         id: ripple_address.id,
         secret: secret
       };
-      adapter.updateRippleAddress(opts, function(err, address){
+      adapter.update(opts, function(err, address){
         assert(address.secret == secret);
         assert(!err);
         fn();
@@ -132,7 +132,7 @@ describe('Ripple Addresses', function(){
         id: ripple_address.id,
         previous_transaction_hash: '12345678'
       };
-      adapter.updateRippleAddress(opts, function(err, address){
+      adapter.update(opts, function(err, address){
         assert(address.previous_transaction_hash == '12345678');
         fn();
       });
@@ -147,10 +147,10 @@ describe('Ripple Addresses', function(){
       opts = {
         id: ripple_address.id
       }
-      adapter.deleteRippleAddress(opts, function(err, ripple_address){
+      adapter.delete(opts, function(err, ripple_address){
         assert(!err);
         assert(ripple_address.id == opts.id);
-        adapter.getRippleAddress(opts, function(err, ripple_address){
+        adapter.read(opts, function(err, ripple_address){
           assert(err.id);
           assert(!ripple_address);
           fn();

@@ -1,4 +1,4 @@
-var adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter');
+var adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter').externalAccounts;
 var assert = require('assert');
 var uuid = require('node-uuid');
 
@@ -14,7 +14,7 @@ describe('External Accounts', function() {
     it('should succeed with a valid account json', function(fn){
       opts.name = uuid.v1();
       opts.user_id = 1;
-      adapter.createExternalAccount(opts, function(err, external_account){
+      adapter.create(opts, function(err, external_account){
         assert(external_account.name == opts.name);
         assert(!err);
         fn();
@@ -22,7 +22,7 @@ describe('External Accounts', function() {
     });
 
     it('should require a name', function(fn){
-      adapter.createExternalAccount(opts, function(err, external_account){
+      adapter.create(opts, function(err, external_account){
         assert(err.name);
         assert(!external_account);
         fn();
@@ -30,7 +30,7 @@ describe('External Accounts', function() {
     });
 
     it('should allow accounts without a user id', function(fn){
-      adapter.createExternalAccount(opts, function(err, external_account){
+      adapter.create(opts, function(err, external_account){
         assert(err.name);
         assert(!err.user_id);
         assert(!external_account);
@@ -43,9 +43,9 @@ describe('External Accounts', function() {
         user_id: 1,
         name: uuid.v1()
       }
-      adapter.createExternalAccount(opts, function(err, external_account){
+      adapter.create(opts, function(err, external_account){
         assert(external_account.name == opts.name);
-        adapter.createExternalAccount(opts, function(err, external_account){
+        adapter.create(opts, function(err, external_account){
           assert(err.user_id);
           assert(err.name);
           assert(!external_account);
@@ -61,9 +61,9 @@ describe('External Accounts', function() {
         user_id: 1,
         name: uuid.v1()
       }
-      adapter.createExternalAccount(opts, function(err, external_account){
+      adapter.create(opts, function(err, external_account){
         opts = { id: external_account.id };
-        adapter.getExternalAccount(opts, function(err, external_account){
+        adapter.read(opts, function(err, external_account){
           assert(external_account.id, opts.id);
           assert(!err);
           fn();
@@ -77,7 +77,7 @@ describe('External Accounts', function() {
       opts = {
         user_id: 1
       }
-      adapter.getExternalAccounts(opts, function(err, external_accounts){
+      adapter.readAll(opts, function(err, external_accounts){
         assert(external_accounts.length >= 0);
         assert(!err);
         fn();
@@ -91,10 +91,10 @@ describe('External Accounts', function() {
         user_id: 1,
         name: uuid.v1()
       }
-      adapter.createExternalAccount(opts, function(err, external_account){
+      adapter.create(opts, function(err, external_account){
         opts.user_id = 2;
         opts.id = external_account.id
-        adapter.updateExternalAccount(opts, function(err, external_account){
+        adapter.update(opts, function(err, external_account){
           assert(!err);
           assert(external_account.user_id == 2);
           fn();
@@ -107,11 +107,11 @@ describe('External Accounts', function() {
         user_id: 1,
         name: uuid.v1()
       }
-      adapter.createExternalAccount(opts, function(err, external_account){
+      adapter.create(opts, function(err, external_account){
         assert(external_account.name == opts.name);
         opts.name = uuid.v1();
         opts.id = external_account.id;
-        adapter.updateExternalAccount(opts, function(err, external_account){
+        adapter.update(opts, function(err, external_account){
           assert(!err);
           assert(external_account.name == opts.name);
           fn();
@@ -135,12 +135,12 @@ describe('External Accounts', function() {
         user_id: 1,
         name: name
       }
-      adapter.createExternalAccount(opts, function(err, external_account){
+      adapter.create(opts, function(err, external_account){
         opts = {
           id: external_account.id
         };
-        adapter.deleteExternalAccount(opts, function(err, external_account){
-          adapter.getExternalAccount(opts, function(err, external_account){
+        adapter.delete(opts, function(err, external_account){
+          adapter.read(opts, function(err, external_account){
             assert(err.id);
             assert(!external_account);
             fn();

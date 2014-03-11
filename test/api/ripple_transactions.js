@@ -1,5 +1,5 @@
 var assert = require("assert");
-var adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter');
+var adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter').rippleTransactions;
 var crypto = require('crypto');
 
 function rand() {
@@ -29,7 +29,7 @@ describe('Ripple Transactions', function(){
 
     it('should fail without required parameters', function(fn){
 
-      adapter.createRippleTransaction(opts, function(err, ripplePayment){
+      adapter.create(opts, function(err, ripplePayment){
         assert(err.to_address_id);
         assert(err.from_address_id);
         assert(err.to_amount);
@@ -54,7 +54,7 @@ describe('Ripple Transactions', function(){
         from_currency: 'usd',
         from_issuer: 't9GCsXLiiZh2pk7bs8TDyYxzByqGKsd',
       }
-      adapter.createRippleTransaction(opts,function(err, ripplePayment) {
+      adapter.create(opts,function(err, ripplePayment) {
         assert(ripplePayment);
         fn();
       });
@@ -63,7 +63,7 @@ describe('Ripple Transactions', function(){
     it('should not allow the same recipient and sender address ids', function(fn) {
       var opts = new Object(validRipplePayment);
       opts.from_address_id = opts.to_address_id;
-      adapter.createRippleTransaction(opts, function(err, ripplePayment) {
+      adapter.create(opts, function(err, ripplePayment) {
         assert(!ripplePayment);
         assert(err.to_address_id);
         assert(err.from_address_id);
@@ -80,7 +80,7 @@ describe('Ripple Transactions', function(){
         to_currency: 'xag',
         to_issuer: issuer
       };
-      adapter.createRippleTransaction(opts, function(err, ripplePayment){
+      adapter.create(opts, function(err, ripplePayment){
         assert(ripplePayment.from_amount == 1);
         assert(ripplePayment.from_currency == 'xag');
         assert(ripplePayment.from_issuer == issuer);
@@ -94,7 +94,7 @@ describe('Ripple Transactions', function(){
       opts.from_address_id = 2;
       opts.to_issuer = 'issuer';
       opts.from_issuer = 'issuer';
-      adapter.createRippleTransaction(opts, function(err, ripplePayment){
+      adapter.create(opts, function(err, ripplePayment){
         // does nothing, but other test depend on the opts, so leave in for now
         fn();
       });
@@ -120,7 +120,7 @@ describe('Ripple Transactions', function(){
 
     before(function(fn){
       opts = new Object(validRipplePayment); 
-      adapter.createRippleTransaction(opts, function(err, ripplePayment) {
+      adapter.create(opts, function(err, ripplePayment) {
         payment = ripplePayment;
         fn();
       });
@@ -132,7 +132,7 @@ describe('Ripple Transactions', function(){
         id: payment.id,
         transaction_hash: hash
       };
-      adapter.updateRipplePayment(opts, function(err, ripplePayment){
+      adapter.update(opts, function(err, ripplePayment){
         assert(ripplePayment.transaction_hash == hash);
         fn();
       });
@@ -143,7 +143,7 @@ describe('Ripple Transactions', function(){
         id: payment.id,
         transaction_state: 'tesSUCCESS'
       }
-      adapter.updateRipplePayment(opts, function(err, ripplePayment){
+      adapter.update(opts, function(err, ripplePayment){
         assert(ripplePayment.transaction_state == 'tesSUCCESS');
         fn();
       });
@@ -154,7 +154,7 @@ describe('Ripple Transactions', function(){
         id: payment.id,
         to_amount: 999
       }
-      adapter.updateRipplePayment(opts, function(err, ripplePayment){
+      adapter.update(opts, function(err, ripplePayment){
         assert(ripplePayment.to_amount == validRipplePayment.to_amount);
         fn();
       });
@@ -170,7 +170,7 @@ describe('Ripple Transactions', function(){
 
     before(function(fn){
       opts = new Object(validRipplePayment); 
-      adapter.createRippleTransaction(opts, function(err, ripplePayment) {
+      adapter.create(opts, function(err, ripplePayment) {
         payment = ripplePayment;
         fn();
       });
@@ -180,7 +180,7 @@ describe('Ripple Transactions', function(){
       opts = {
         id: payment.id    
       }
-      adapter.getRipplePayment(opts, function(err, ripple_payment){
+      adapter.read(opts, function(err, ripple_payment){
         assert(ripple_payment.id == opts.id); 
         fn();
       });
@@ -191,7 +191,7 @@ describe('Ripple Transactions', function(){
       opts = {
         ids: [1,2,3]
       };
-      adapter.getRipplePayments(opts, function(err, ripple_payments){
+      adapter.readAll(opts, function(err, ripple_payments){
         assert(ripple_payments.length == 3); 
         assert(ripple_payments[0].id == 1);
         assert(ripple_payments[1].id == 2);
@@ -202,7 +202,7 @@ describe('Ripple Transactions', function(){
 
     it('should be able to get all ripple transactions', function(fn){
       opts = {};
-      adapter.getRipplePayments(opts, function(err, ripple_payments){
+      adapter.readAll(opts, function(err, ripple_payments){
         assert(ripple_payments.length > -1); 
         fn();
       }); 
@@ -216,8 +216,8 @@ describe('Ripple Transactions', function(){
       opts = {
         id: payment.id
       }
-      adapter.deleteRipplePayment(opts, function(err, ripple_payment){
-        adapter.getRipplePayment(opts, function(err, ripple_payment){
+      adapter.delete(opts, function(err, ripple_payment){
+        adapter.read(opts, function(err, ripple_payment){
           assert(err);
           assert(err.id);
           assert(!ripple_payment);

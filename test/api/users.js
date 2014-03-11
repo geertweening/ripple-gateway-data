@@ -1,4 +1,4 @@
-var adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter');
+var adapter = require(process.env.GATEWAY_DATA_ADAPTER || '../../adapters/test_adapter').users;
 var assert = require('assert');
 var crypto = require('crypto');
 
@@ -21,7 +21,7 @@ describe('Users', function(){
         name: random(),
         password: random()
       } 
-      adapter.createUser(opts, function(err, user){
+      adapter.create(opts, function(err, user){
         assert(!err);
         assert(user.id > 0);
         assert(user.name == opts.name); 
@@ -36,14 +36,14 @@ describe('Users', function(){
         name: random(), 
         password: random()
       }; 
-      adapter.createUser(opts, function(err, user){
+      adapter.create(opts, function(err, user){
         assert(user.salt);
         var firstSalt = user.salt;
         opts = {
           name: random(), 
           password: random()
         };
-        adapter.createUser(opts, function(err, user){
+        adapter.create(opts, function(err, user){
           assert(user.salt);
           assert(firstSalt != user.salt);
           fn();
@@ -56,7 +56,7 @@ describe('Users', function(){
         name: random(), 
         password: random(),
       } 
-      adapter.createUser(opts, function(err, user){
+      adapter.create(opts, function(err, user){
         assert(!err);
         assert(!user.password);
         assert(user.password_hash)
@@ -70,8 +70,8 @@ describe('Users', function(){
         name: random(), 
         password: random()
       } 
-      adapter.createUser(opts, function(err, user){
-        adapter.createUser(opts, function(err, user){
+      adapter.create(opts, function(err, user){
+        adapter.create(opts, function(err, user){
           assert(err.name);
           assert(!user);
           fn();
@@ -84,7 +84,7 @@ describe('Users', function(){
         name: 'admin',
         password: random()
       } 
-      adapter.createUser(opts, function(err, user){
+      adapter.create(opts, function(err, user){
         assert(err.name);
         assert(!user);
         fn();
@@ -98,14 +98,14 @@ describe('Users', function(){
   describe('Retreiving a user', function() {
 
     it('should retreive a user by id', function(done) {
-      adapter.getUser({id: userId}, function(err, user) {
+      adapter.read({id: userId}, function(err, user) {
         assert(user.id == userId);
         done();
       });
     });
 
     it('should retreive a user by username', function(done) {
-      adapter.getUser({name: userName}, function(err, user) {
+      adapter.read({name: userName}, function(err, user) {
         assert(user.name == userName);
         done();
       });
@@ -119,14 +119,14 @@ describe('Users', function(){
     var external_id = random();
 
     it('should add an external_id to a user', function(done) {
-      adapter.updateUser({id: userId}, {external_id: external_id}, function(err, user) {
+      adapter.update({id: userId}, {external_id: external_id}, function(err, user) {
         assert(user.external_id == external_id);
         done();
       });
     });
 
     it('should retreive the user by updated external_id', function(done) {
-      adapter.getUser({external_id: external_id}, function(err, user) {
+      adapter.read({external_id: external_id}, function(err, user) {
         assert(user.external_id == external_id);
         assert(user.name == userName);
         done();
@@ -151,7 +151,7 @@ describe('Users', function(){
         }
       }
 
-      adapter.createUser(opts, function(err, user){
+      adapter.create(opts, function(err, user){
         assert(user.data.phone_numbers[0] == '8675309');
         assert(user.id);
         dataUserId = user.id;
@@ -184,7 +184,7 @@ describe('Users', function(){
         }
       };
 
-      adapter.updateUser({id: dataUserId}, opts, function(err, user) {
+      adapter.update({id: dataUserId}, opts, function(err, user) {
         assert(user.data.phone_numbers[0] == '8675309');
         assert(user.data.computers.mac.storage == '100gb');
         assert(user.data.computers.mac.screens[0] == '0123');
@@ -196,7 +196,7 @@ describe('Users', function(){
     });
 
     it ('should verify the added data is retrievable', function(done) {
-      adapter.getUser({id: dataUserId}, function(err, user) {
+      adapter.read({id: dataUserId}, function(err, user) {
         assert(user.data.phone_numbers[0] == '8675309');
         assert(user.data.computers.mac.storage == '100gb');
         assert(user.data.computers.mac.screens[0] == '0123');
