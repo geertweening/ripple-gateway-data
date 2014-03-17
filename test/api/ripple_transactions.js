@@ -189,7 +189,7 @@ describe('Ripple Transactions', function(){
     
     it('should be able to get multiple ripple transactions using an array of ids', function(fn){
       opts = {
-        ids: [1,2,3]
+        id: [1,2,3]
       };
       adapter.readAll(opts, function(err, ripple_payments){
         assert(ripple_payments.length == 3); 
